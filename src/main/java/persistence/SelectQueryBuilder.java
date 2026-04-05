@@ -7,6 +7,7 @@ public class SelectQueryBuilder {
     private String orderByColumn;
     private OrderDirection orderByDirection;
     private Integer limit;
+    private String whereCondition;
 
     /**
      * SELECT 절 지정
@@ -58,6 +59,12 @@ public class SelectQueryBuilder {
         return this;
     }
 
+    // SELECT 쿼리에 WHERE 조건을 추가하여 특정 조건의 데이터만 조회할 수 있다.
+    public SelectQueryBuilder where(String condition) {
+        this.whereCondition = condition;
+        return this;
+    }
+
     /**
      * SQL 문자열 생성
      *
@@ -73,6 +80,7 @@ public class SelectQueryBuilder {
 
         return "SELECT " + (columns != null ? String.join(", ", columns) : "*") +
                 " FROM " + table +
+                (whereCondition != null ? " WHERE " + whereCondition : "") +
                 (orderByColumn != null ? " ORDER BY " + orderByColumn + " " + orderByDirection : "") +
                 (limit != null ? " LIMIT " + limit : "");
     }
